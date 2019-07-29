@@ -209,7 +209,7 @@ class Books extends Component {
                   <ListItem key={book._id}>
                    
                       <strong>
-                 {book.weight} lb on (Day {book.days}) entered at {moment(book.date).format( 'LLL')}
+                      {book.title}:  {book.weight} lb on (Day {book.days}) entered at {moment(book.date).format( 'LLL')}
                    
                       </strong>
                       

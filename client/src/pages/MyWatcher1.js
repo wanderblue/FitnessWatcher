@@ -7,6 +7,7 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import Navbar from '../components/navbar'
+import DeleteBtn from "../components/DeleteBtn";
 //import wGraph from '../components/wGraph'
 import YourLineGraph from "../components/YourDashboard/YourLineGraph";
 import classes from "../views/YourDashboard/YourDashboard.module.css";
@@ -25,7 +26,7 @@ class Books extends Component {
     loggedIn: true,
     weightData: [],
     labels: [],
-    user: "blue"
+    user: "Jane Eyre"
 
   };
 
@@ -55,7 +56,23 @@ class Books extends Component {
   
    // let weightData = []
     //let labels = []
+    
+     //function to remove book by id
+     handleDeleteButton = id => {
+      API.deleteBook(id)
+          .then(res => this.componentDidMount())
+          .catch(err => console.log(err))
+  }
+    
+    deleteBook = id => {
+      API.deleteBook(id)
+        .then(response => response.json())
+        .then(res => this.loadBooks())
+        .catch(err => console.log(err));
+    };
   
+
+
     loadData = () => {
       
       
@@ -100,7 +117,7 @@ class Books extends Component {
     if ( this.state.weight) {
       API.saveBook({
         
-        title: this.state.username,
+        title: this.state.user,
         weight: this.state.weight,
         days: this.state.days
       })
@@ -108,6 +125,15 @@ class Books extends Component {
         .then(res => this.loadBooks())
         .catch(err => console.log(err));
     }
+    alert('Record added. Click on view button on left to view your record!');
+
+    API.getUser(this.state.user)
+    .then(response => response.json())
+    .then(res =>
+      this.setState({ books: res, title: "", weight: "", days: "" }),
+    )
+    .catch(err => console.log(err));
+    
   };
   
 
@@ -119,7 +145,7 @@ class Books extends Component {
       <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} /> 
 
       <Container fluid>
-        <row><h6>welcome, {this.state.user}!</h6></row>
+        <row><h6>welcome!</h6></row>
         <Row>
           <Col size="md-6">
             <Jumbotron>
@@ -129,9 +155,9 @@ class Books extends Component {
             </Jumbotron>
             <form>
             <Input
-                value={this.state.username}
+                value={this.state.user}
                 onChange={this.handleInputChange}
-                name="username"
+                name="user"
                 placeholder="username (required)"
               />
               <Input
@@ -140,11 +166,11 @@ class Books extends Component {
                 name="weight"
                 placeholder="weight (required)"
               />
-              <TextArea
+              <Input
                 value={this.state.days}
                 onChange={this.handleInputChange}
                 name="days"
-                placeholder="days (required)"
+                placeholder="day number (required)"
               />
               <FormBtn
                 disabled={!(this.state.weight)}
@@ -165,7 +191,7 @@ class Books extends Component {
               onClick={this.loadBooks}
                           
               >
-                submit
+                view
               </FormBtn>
               
             </Jumbotron>
@@ -183,9 +209,11 @@ class Books extends Component {
                   <ListItem key={book._id}>
                    
                       <strong>
-                {book.title} : {book.weight} lb at (Day {book.days}) {moment(book.date).format( 'LLL')}
+                 {book.weight} lb on (Day {book.days}) entered at {moment(book.date).format( 'LLL')}
                    
                       </strong>
+                      
+                      <DeleteBtn onClick={() => this.handleDeleteButton(book._id)} />
                   </ListItem>
                  
                 ))}
@@ -202,7 +230,7 @@ class Books extends Component {
                         data={this.state.weightData}
                         labels={this.state.labels} 
                     />
-                    <h4>day</h4>
+                  
                     </>
                     ) : (
                         <h4></h4>

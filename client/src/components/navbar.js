@@ -53,8 +53,8 @@ class Navbar extends Component {
                             <section className="navbar-section">
               
                                  
-                                <Link to="/logout" className="btn btn-link text-secondary" >
-                                <span className="text-secondary">logout</span></Link>
+                                <Link to="/" className="btn btn-link text-secondary" >
+                                <span className="text-secondary">home</span></Link>
                                
                             </section>
                         ) : (
@@ -68,10 +68,10 @@ class Navbar extends Component {
 
                           
                                     <Link to="/login" className="btn btn-link text-secondary">
-                                    <span className="text-secondary">login</span>
+                                    <span className="text-secondary"></span>
 				</Link>
                                     <Link to="/signup" className="btn btn-link">
-                                    <span className="text-secondary">sign up</span>
+                                    <span className="text-secondary"></span>
 				</Link>
                                 </section>
                             )}

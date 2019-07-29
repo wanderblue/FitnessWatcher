@@ -49,7 +49,7 @@ export default class LineGraph extends Component {
                         left: 0,
                         right: 50,
                         top: 0,
-                        bottom: 0
+                        bottom: 50
                     }
                 }
         
